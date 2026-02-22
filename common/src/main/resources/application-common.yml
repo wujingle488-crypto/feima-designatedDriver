@@ -1,0 +1,26 @@
+spring:
+  profiles: common
+
+tencent:
+  cloud:
+    appId: 1326451774
+    secretId:
+    secretKey:
+    region-public: ap-guangzhou
+    bucket-public: fmdj-public-1326451774
+    region-private: ap-guangzhou
+    bucket-private: fmdj-1326451774
+  map:
+    key: 111
+wx:
+  app-id: wxe323be3370602585
+  app-secret: 52a2242f89a22deeea37b610b802fb09
+  mch-id: 111
+  key: 222
+#  cert-path: 333
+
+minio:
+  endpoint: http://14.103.42.241:9000
+  access-key: root
+  secret-key: yiliaoxiangmu123
+
