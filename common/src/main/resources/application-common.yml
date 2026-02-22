@@ -13,8 +13,8 @@ tencent:
   map:
     key: 111
 wx:
-  app-id: wxe323be3370602585
-  app-secret: 52a2242f89a22deeea37b610b802fb09
+  app-id: wxa4a547bf9c56ff29
+  app-secret: 8b6ba3bce7206e7070b9eebae9e7d105
   mch-id: 111
   key: 222
 #  cert-path: 333

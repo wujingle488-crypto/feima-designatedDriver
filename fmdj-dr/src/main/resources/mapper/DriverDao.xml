@@ -3,5 +3,33 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fmdj.dr.db.dao.DriverDao">
+    <!--查询司机是否存在注册记录-->
+    <select id="existsDriver" resultType="java.lang.Long" parameterType="java.util.Map">
+        SELECT COUNT(1) as cnt FROM tb_driver
+        WHERE 1=1
+        <if test="openId != null">
+            AND open_id = #{openId}
+        </if>
+        <if test="id != null">
+            AND id = #{id}
+        </if>
+    </select>
 
+    <!--不存在注册记录，直接报保存司机记录-->
+    <insert id="registerDriver" parameterType="map">
+        INSERT INTO tb_driver
+            SET open_id = #{openId},
+                nickname = #{nickname},
+                photo = #{photo},
+                real_auth = 1,
+                summary = '{"level":0,"totalOrder":0,"weekOrder":0,"weekComment":0,"appeal":0}',
+                archive = false,
+                `status` = 1
+    </insert>
+
+    <select id="getDriverId" resultType="java.lang.String">
+        SELECT CAST(id AS CHAR) AS id
+        FROM tb_driver
+        WHERE open_id = #{openId}
+    </select>
 </mapper>

@@ -5,7 +5,7 @@ import com.fmdj.dr.db.pojo.WalletEntity;
 
 public interface WalletDao {
 
-    public int insert(WalletEntity entity);
+    int insert(WalletEntity entity);
 
 }
 

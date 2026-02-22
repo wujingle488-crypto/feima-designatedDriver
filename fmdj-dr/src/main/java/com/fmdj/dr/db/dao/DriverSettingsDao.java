@@ -7,11 +7,7 @@ import com.fmdj.dr.db.pojo.DriverSettingsEntity;
  */
 public interface DriverSettingsDao {
 
-    public int insertDriversSettings(DriverSettingsEntity entity);
-
-    public String selectDriverSettings(long driverId);
-
-
+    int insertDriversSettings(DriverSettingsEntity entity);
 }
 
 

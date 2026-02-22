@@ -3,4 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fmdj.dr.db.dao.DriverSettingsDao">
+
+    <insert id="insertDriversSettings" parameterType="com.fmdj.dr.db.pojo.DriverSettingsEntity">
+        INSERT INTO tb_driver_settings
+            SET driver_id = #{driverId},
+                settings = #{settings}
+    </insert>
 </mapper>

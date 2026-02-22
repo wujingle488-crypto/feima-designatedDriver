@@ -11,19 +11,6 @@ public interface DriverDao {
 
     String getDriverId(String openId);
 
-    int updateDriverAuth(Map params);
-
-    HashMap login(String openId);
-
-    HashMap selectDriverInfo(long driverId);
-
-    ArrayList<HashMap> selectDriverByPage(Map map);
-    long selectDriverByCount(Map map);
-
-    HashMap selectDriverAuth(long driverId);
-
-    int updateDriverRealAuth(Map param);
-
 }
 
 

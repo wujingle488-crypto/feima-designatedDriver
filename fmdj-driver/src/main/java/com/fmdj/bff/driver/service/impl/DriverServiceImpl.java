@@ -15,5 +15,16 @@ import java.util.HashMap;
 
 @Service
 public class DriverServiceImpl implements DriverService {
+    @Resource
+    private DrServiceApi drServiceApi;
+
+    @Override
+    @Transactional
+    @LcnTransaction
+    public long registerDriver(RegisterDriverForm form) {
+        CommonResult commonResult = drServiceApi.registerDriver(form);
+        Object userId = commonResult.get("userId");
+        return Long.parseLong(userId.toString());
+    }
 
 }

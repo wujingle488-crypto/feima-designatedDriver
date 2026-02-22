@@ -18,5 +18,17 @@ import java.util.HashMap;
 @RequestMapping("/driver")
 @Tag(name = "DriverController",description = "司机端模块接口")
 public class DriverController {
+    @Resource
+    private DriverService driverService;
 
+    @PostMapping("/registerNewDriver")
+    @Operation(summary = "司机注册接口")
+    public CommonResult registerDriver(@RequestBody @Valid RegisterDriverForm form) {
+        long driverId = driverService.registerDriver(form);
+        //因为权限认证是基于SaToken生成的
+        StpUtil.login(driverId);
+        //返回token信息给客户端
+        String tokenValue = StpUtil.getTokenInfo().getTokenValue();
+        return CommonResult.ok().put(CommonResult.RETURN_TOKEN, tokenValue);
+    }
 }
