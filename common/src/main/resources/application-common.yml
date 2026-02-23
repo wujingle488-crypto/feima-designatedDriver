@@ -3,13 +3,13 @@ spring:
 
 tencent:
   cloud:
-    appId: 1326451774
+    appId: 1394366668
     secretId:
     secretKey:
-    region-public: ap-guangzhou
-    bucket-public: fmdj-public-1326451774
-    region-private: ap-guangzhou
-    bucket-private: fmdj-1326451774
+    region-public: ap-beijing
+    bucket-public: fmdj-public-1394366668
+    region-private: ap-beijing
+    bucket-private: fmdj-1394366668
   map:
     key: 111
 wx:

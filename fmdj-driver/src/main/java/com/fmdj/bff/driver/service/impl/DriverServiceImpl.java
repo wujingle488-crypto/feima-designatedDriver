@@ -27,4 +27,13 @@ public class DriverServiceImpl implements DriverService {
         return Long.parseLong(userId.toString());
     }
 
+    @Override
+    @Transactional
+    @LcnTransaction
+    public int updateDriverAuth(UpdateDriverAuthForm form) {
+        CommonResult commonResult = drServiceApi.updateDriverAuth(form);
+        Object rowsObj = commonResult.get(CommonResult.RETURN_ROW);
+        return Integer.parseInt(rowsObj.toString());
+    }
+
 }

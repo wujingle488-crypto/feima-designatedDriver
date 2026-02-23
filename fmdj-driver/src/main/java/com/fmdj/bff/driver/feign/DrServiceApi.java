@@ -10,5 +10,8 @@ import javax.validation.Valid;
 @FeignClient("fmdj-dr")
 public interface DrServiceApi {
     @PostMapping("/driver/registerDriver")
-    public CommonResult registerDriver(RegisterDriverForm form);
+    CommonResult registerDriver(RegisterDriverForm form);
+
+    @PostMapping("/driver/updateDriverAuth")
+    CommonResult updateDriverAuth(UpdateDriverAuthForm form);
 }

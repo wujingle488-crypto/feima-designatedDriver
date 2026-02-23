@@ -7,4 +7,6 @@ import java.util.HashMap;
 
 public interface DriverService {
     long registerDriver(RegisterDriverForm form);
+
+    int updateDriverAuth(UpdateDriverAuthForm form);
 }

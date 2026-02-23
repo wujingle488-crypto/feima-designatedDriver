@@ -31,4 +31,14 @@ public class DriverController {
         String tokenValue = StpUtil.getTokenInfo().getTokenValue();
         return CommonResult.ok().put(CommonResult.RETURN_TOKEN, tokenValue);
     }
+
+    @PostMapping("/updateDriverAuth")
+    @Operation(summary = "司机实名认证接口")
+    @SaCheckLogin
+    public CommonResult updateDriverAuth(@RequestBody @Valid UpdateDriverAuthForm form) {
+        long driverId = StpUtil.getLoginIdAsLong();
+        form.setDriverId(driverId);
+        int rows = driverService.updateDriverAuth(form);
+        return CommonResult.ok().put(CommonResult.RETURN_ROW, rows);
+    }
 }

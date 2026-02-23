@@ -3,6 +3,7 @@ package com.fmdj.dr.controller;
 import cn.hutool.core.bean.BeanUtil;
 import com.fmdj.common.util.CommonResult;
 import com.fmdj.dr.controller.form.RegisterDriverForm;
+import com.fmdj.dr.controller.form.UpdateDriverAuthForm;
 import com.fmdj.dr.service.DriverService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,6 +31,14 @@ public class DriverController {
         String driverId = driverService.registerDriver(param);
         //返回给前端注册成功的ID
         return CommonResult.ok().put(CommonResult.RETURN_USER_ID, driverId);
+    }
+
+    @PostMapping("/updateDriverAuth")
+    @Operation(summary = "更新司机实名认证信息接口")
+    public CommonResult updateDriverAuth(@RequestBody @Valid UpdateDriverAuthForm form) {
+        Map<String, Object> param = BeanUtil.beanToMap(form);
+        int rows = driverService.updateDriverAuth(param);
+        return CommonResult.ok().put(CommonResult.RETURN_ROW, rows);
     }
 
 }

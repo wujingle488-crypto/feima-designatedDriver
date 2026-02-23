@@ -4,4 +4,6 @@ import java.util.Map;
 
 public interface DriverService {
     String registerDriver(Map param);
+
+    int updateDriverAuth(Map map);
 }

@@ -97,4 +97,11 @@ public class DriverServiceImpl implements DriverService {
         return driverId;
     }
 
+    @Override
+    @Transactional
+    @LcnTransaction
+    public int updateDriverAuth(Map map) {
+        return driverDao.updateDriverAuth(map);
+    }
+
 }
