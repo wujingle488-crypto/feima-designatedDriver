@@ -82,4 +82,15 @@ public class DriverController {
         HashMap result = driverService.selectWorkbenchData(driverId);
         return CommonResult.ok().put(CommonResult.RETURN_RESULT, result);
     }
+
+    @GetMapping("/searchDriverAuth")
+    @Operation(summary = "查询司机实名认证信息接口")
+    @SaCheckLogin
+    public CommonResult selectDriverInfoById() {
+        long driverId = StpUtil.getLoginIdAsLong();
+        SelectDriverAuthForm selectDriverAuthForm = new SelectDriverAuthForm();
+        selectDriverAuthForm.setDriverId(driverId);
+        HashMap result = driverService.selectDriverInfoById(selectDriverAuthForm);
+        return CommonResult.ok().put(CommonResult.RETURN_RESULT, result);
+    }
 }

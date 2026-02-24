@@ -16,6 +16,8 @@ public interface DriverDao {
     HashMap<String, Object> login(String openId);
 
     HashMap<String, Object> selectDriverInfo(long driverId);
+
+    HashMap<String, Object> selectDriverInfoById(long driverId);
 }
 
 

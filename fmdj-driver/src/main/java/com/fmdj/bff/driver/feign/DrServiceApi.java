@@ -1,11 +1,9 @@
 package com.fmdj.bff.driver.feign;
-import com.fmdj.common.util.CommonResult;
+
 import com.fmdj.bff.driver.controller.form.*;
+import com.fmdj.common.util.CommonResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.validation.Valid;
 
 @FeignClient("fmdj-dr")
 public interface DrServiceApi {
@@ -22,5 +20,8 @@ public interface DrServiceApi {
     CommonResult selectDriverInfo(SelectDriverInfoForm form);
 
     @PostMapping("/settings/selectDriverSettings")
-    CommonResult selectDriverSettings(@RequestBody @Valid SelectDriverSettingsForm form);
+    CommonResult selectDriverSettings(SelectDriverSettingsForm form);
+
+    @PostMapping("/driver/selectDriverAuth")
+    CommonResult selectDriverAuth(SelectDriverAuthForm form);
 }

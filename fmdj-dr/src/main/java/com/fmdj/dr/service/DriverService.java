@@ -11,4 +11,6 @@ public interface DriverService {
     HashMap<String, Object> login(String code);
 
     HashMap<String, Object> selectDriverInfo(long driverId);
+
+    HashMap<String, Object> selectDriverInfoById(long driverId);
 }

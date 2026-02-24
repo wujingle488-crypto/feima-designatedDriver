@@ -2,10 +2,7 @@ package com.fmdj.dr.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.fmdj.common.util.CommonResult;
-import com.fmdj.dr.controller.form.LoginForm;
-import com.fmdj.dr.controller.form.RegisterDriverForm;
-import com.fmdj.dr.controller.form.SelectDriverInfoForm;
-import com.fmdj.dr.controller.form.UpdateDriverAuthForm;
+import com.fmdj.dr.controller.form.*;
 import com.fmdj.dr.service.DriverService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -55,6 +52,13 @@ public class DriverController {
     public CommonResult selectDriverInfo(@RequestBody @Valid SelectDriverInfoForm form) {
         HashMap<String, Object> map = driverService.selectDriverInfo(form.getDriverId());
         return CommonResult.ok().put(CommonResult.RETURN_RESULT, map);
+    }
+
+    @PostMapping("/selectDriverAuth")
+    @Operation(summary = "根据ID查询司机个人信息")
+    public CommonResult selectDriverAuth(@RequestBody @Valid SelectDriverAuthForm form) {
+        HashMap<String, Object> result = driverService.selectDriverInfoById(form.getDriverId());
+        return CommonResult.ok().put(CommonResult.RETURN_RESULT, result);
     }
 
 }

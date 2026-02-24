@@ -129,4 +129,10 @@ public class DriverServiceImpl implements DriverService {
         map.replace("summary", jsonObject);
         return map;
     }
+
+    @Override
+    public HashMap<String, Object> selectDriverInfoById(long driverId) {
+        return driverDao.selectDriverInfoById(driverId);
+    }
+
 }
