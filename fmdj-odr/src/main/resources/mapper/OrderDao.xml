@@ -4,4 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fmdj.odr.db.dao.OrderDao">
 
+    <select id="selectDriverTodayBusinessData" resultType="java.util.HashMap" parameterType="long">
+        SELECT
+            SUM(TIMESTAMPDIFF(HOUR,end_time,start_time)) AS duration,
+            SUM(real_fee) AS income,
+            COUNT(id) AS orders
+        FROM tb_order
+        WHERE driver_id = #{driverId}
+        AND date = CURRENT_DATE
+    </select>
 </mapper>
