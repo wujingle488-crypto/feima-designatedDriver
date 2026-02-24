@@ -104,4 +104,29 @@ public class DriverServiceImpl implements DriverService {
         return driverDao.updateDriverAuth(map);
     }
 
+    @Override
+    public HashMap<String, Object> login(String code) {
+        String openId = microAppUtil.getOpenId(code);
+        HashMap<String, Object> loginResult = driverDao.login(openId);
+        /**
+         * 判断是否满足条件，采集过人脸信息
+         * archive:是否在腾讯云归档存放司机面部信息（是否做过人脸采集）
+         */
+        if (loginResult != null) {
+            if (loginResult.containsKey("archive")) {
+                Integer temp = MapUtil.getInt(loginResult, "archive");
+                boolean archive = temp == 1 ? true : false;
+                loginResult.replace("archive", archive);
+            }
+        }
+        return loginResult;
+    }
+
+    @Override
+    public HashMap<String, Object> selectDriverInfo(long driverId) {
+        HashMap<String, Object> map = driverDao.selectDriverInfo(driverId);
+        JSONObject jsonObject = JSONUtil.parseObj(MapUtil.getStr(map, "summary"));
+        map.replace("summary", jsonObject);
+        return map;
+    }
 }

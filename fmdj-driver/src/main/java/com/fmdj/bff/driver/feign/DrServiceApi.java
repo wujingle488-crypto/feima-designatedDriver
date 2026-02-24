@@ -14,4 +14,10 @@ public interface DrServiceApi {
 
     @PostMapping("/driver/updateDriverAuth")
     CommonResult updateDriverAuth(UpdateDriverAuthForm form);
+
+    @PostMapping("/driver/login")
+    CommonResult login(LoginForm form);
+
+    @PostMapping("/driver/selectDriverInfo")
+    CommonResult selectDriverInfo(SelectDriverInfoForm form);
 }

@@ -41,4 +41,36 @@ public class DriverController {
         int rows = driverService.updateDriverAuth(form);
         return CommonResult.ok().put(CommonResult.RETURN_ROW, rows);
     }
+
+    @PostMapping("/login")
+    @Operation(summary = "司机登录接口")
+    public CommonResult login(@RequestBody @Valid LoginForm form) {
+        HashMap<String, Object> loginResult = driverService.login(form);
+        if (loginResult != null) {
+            Long driverId = MapUtil.getLong(loginResult, "id");
+            byte realAuth = Byte.parseByte(MapUtil.getStr(loginResult, "realAuth"));
+            Boolean archive = MapUtil.getBool(loginResult, "archive");
+            StpUtil.login(driverId);
+            String token = StpUtil.getTokenInfo().getTokenValue();
+            return CommonResult.ok().put(CommonResult.RETURN_TOKEN, token).put("realAuth", realAuth).put("archive", archive);
+        }
+        return CommonResult.ok();
+    }
+
+    @GetMapping("/logout")
+    @Operation(summary = "司机退出登录接口")
+    public CommonResult logout(){
+        StpUtil.logout();
+        return CommonResult.ok();
+    }
+
+    @PostMapping("/selectDriverInfo")
+    @Operation(summary = "查询司机个人信息接口")
+    public CommonResult selectDriverInfo() {
+        long driverId = StpUtil.getLoginIdAsLong();
+        SelectDriverInfoForm selectDriverInfoForm = new SelectDriverInfoForm();
+        selectDriverInfoForm.setDriverId(driverId);
+        HashMap<String, Object> map = driverService.selectDriverInfo(selectDriverInfoForm);
+        return CommonResult.ok().put(CommonResult.RETURN_RESULT, map);
+    }
 }

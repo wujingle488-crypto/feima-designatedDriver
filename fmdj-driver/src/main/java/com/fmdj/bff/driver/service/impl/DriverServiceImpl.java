@@ -36,4 +36,16 @@ public class DriverServiceImpl implements DriverService {
         return Integer.parseInt(rowsObj.toString());
     }
 
+    @Override
+    public HashMap<String, Object> login(LoginForm form) {
+        CommonResult loginResult = drServiceApi.login(form);
+        HashMap<String, Object> map = (HashMap<String, Object>) loginResult.get(CommonResult.RETURN_RESULT);
+        return map;
+    }
+
+    @Override
+    public HashMap<String, Object> selectDriverInfo(SelectDriverInfoForm form) {
+        CommonResult commonResult = drServiceApi.selectDriverInfo(form);
+        return (HashMap<String, Object>) commonResult.get(CommonResult.RETURN_RESULT);
+    }
 }

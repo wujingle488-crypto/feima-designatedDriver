@@ -9,4 +9,8 @@ public interface DriverService {
     long registerDriver(RegisterDriverForm form);
 
     int updateDriverAuth(UpdateDriverAuthForm form);
+
+    HashMap<String, Object> login(LoginForm form);
+
+    HashMap<String, Object> selectDriverInfo(SelectDriverInfoForm form);
 }

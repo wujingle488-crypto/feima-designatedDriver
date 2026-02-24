@@ -58,4 +58,32 @@
                 drcard_holding    = #{drcardHolding}
         WHERE id = #{driverId}
     </update>
+
+    <select id="login" resultType="java.util.HashMap" parameterType="String">
+        SELECT CAST(id AS CHAR) AS id,
+            real_auth AS realAuth,
+            archive,
+            tel
+        FROM tb_driver
+        WHERE `status` != 2 AND open_id = #{openId}
+    </select>
+
+    <select id="selectDriverInfo" resultType="java.util.HashMap" parameterType="long">
+        SELECT  d.open_id as openId,
+                d.`name`,
+                d.nickname,
+                d.sex,
+                d.photo,
+                d.tel,
+                d.email,
+                d.pid,
+                d.real_auth as realAuth,
+                d.summary,
+                d.status,
+                CAST(w.balance AS CHAR) as balance,
+                d.create_time as createTime
+        FROM tb_driver d
+        INNER JOIN tb_wallet w ON d.id = w.driver_id
+        WHERE d.id = #{driverId}
+    </select>
 </mapper>

@@ -1,5 +1,5 @@
 package com.fmdj.dr.db.dao;
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +12,10 @@ public interface DriverDao {
     String getDriverId(String openId);
 
     int updateDriverAuth(Map map);
+
+    HashMap<String, Object> login(String openId);
+
+    HashMap<String, Object> selectDriverInfo(long driverId);
 }
 
 
