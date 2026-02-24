@@ -9,4 +9,10 @@
             SET driver_id = #{driverId},
                 settings = #{settings}
     </insert>
+
+    <select id="selectDriverSettings" resultType="string" parameterType="long">
+        SELECT settings
+        FROM tb_driver_settings
+        WHERE driver_id = #{driverId}
+    </select>
 </mapper>

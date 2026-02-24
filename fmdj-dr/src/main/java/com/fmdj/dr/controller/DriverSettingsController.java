@@ -18,5 +18,13 @@ import java.util.HashMap;
 @RequestMapping("/settings")
 @Tag(name = "DriverSettingsController",description = "司机设置模块接口")
 public class DriverSettingsController {
+    @Resource
+    private DriverSettingsService driverSettingsService;
 
+    @PostMapping("/selectDriverSettings")
+    @Operation(summary = "查询司机设置")
+    public CommonResult selectDriverSettings(@RequestBody @Valid SelectDriverSettingsForm form) {
+        HashMap<String, Object> result = driverSettingsService.selectDriverSettings(form.getDriverId());
+        return CommonResult.ok().put(CommonResult.RETURN_RESULT, result);
+    }
 }

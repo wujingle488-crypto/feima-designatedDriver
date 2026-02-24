@@ -13,5 +13,18 @@ import java.util.HashMap;
 @Service
 @Slf4j
 public class DriverSettingsServiceImpl implements DriverSettingsService {
+    @Resource
+    private DriverSettingsDao driverSettingsDao;
 
+
+    @Override
+    public HashMap<String, Object> selectDriverSettings(Long driverId) {
+        String settings = driverSettingsDao.selectDriverSettings(driverId);
+        HashMap map = JSONUtil.parseObj(settings).toBean(HashMap.class);
+        boolean listenService = MapUtil.getInt(map, "listenService") == 1 ? true : false;
+        boolean autoAccept = MapUtil.getInt(map, "autoAccept") == 1 ? true : false;
+        map.replace("listenService", listenService);
+        map.replace("autoAccept", autoAccept);
+        return map;
+    }
 }

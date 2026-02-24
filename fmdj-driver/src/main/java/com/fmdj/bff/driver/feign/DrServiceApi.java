@@ -20,4 +20,7 @@ public interface DrServiceApi {
 
     @PostMapping("/driver/selectDriverInfo")
     CommonResult selectDriverInfo(SelectDriverInfoForm form);
+
+    @PostMapping("/settings/selectDriverSettings")
+    CommonResult selectDriverSettings(@RequestBody @Valid SelectDriverSettingsForm form);
 }

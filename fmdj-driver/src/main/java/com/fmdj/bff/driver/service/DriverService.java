@@ -13,4 +13,6 @@ public interface DriverService {
     HashMap<String, Object> login(LoginForm form);
 
     HashMap<String, Object> selectDriverInfo(SelectDriverInfoForm form);
+
+    HashMap selectWorkbenchData(long driverId);
 }

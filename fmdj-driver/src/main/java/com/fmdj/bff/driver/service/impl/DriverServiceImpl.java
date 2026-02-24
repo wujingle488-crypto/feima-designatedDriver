@@ -1,7 +1,6 @@
 package com.fmdj.bff.driver.service.impl;
-import cn.hutool.core.map.MapUtil;
+
 import com.codingapi.txlcn.tc.annotation.LcnTransaction;
-import com.fmdj.common.util.CosUtil;
 import com.fmdj.bff.driver.controller.form.*;
 import com.fmdj.bff.driver.feign.DrServiceApi;
 import com.fmdj.bff.driver.feign.OdrServiceApi;
@@ -17,6 +16,9 @@ import java.util.HashMap;
 public class DriverServiceImpl implements DriverService {
     @Resource
     private DrServiceApi drServiceApi;
+
+    @Resource
+    private OdrServiceApi odrServiceApi;
 
     @Override
     @Transactional
@@ -48,4 +50,26 @@ public class DriverServiceImpl implements DriverService {
         CommonResult commonResult = drServiceApi.selectDriverInfo(form);
         return (HashMap<String, Object>) commonResult.get(CommonResult.RETURN_RESULT);
     }
+
+    @Override
+    public HashMap selectWorkbenchData(long driverId) {
+        //查询司机当天的业务数据
+        SelectDriverTodayBusinessDataForm form1 = new SelectDriverTodayBusinessDataForm();
+        form1.setDriverId(driverId);
+        CommonResult commonResult1 = odrServiceApi.selectDriverTodayBusinessData(form1);
+        HashMap result1 =  (HashMap)commonResult1.get(CommonResult.RETURN_RESULT);
+
+        //查询司机的设置信息
+        SelectDriverSettingsForm form2 = new SelectDriverSettingsForm();
+        form2.setDriverId(driverId);
+        CommonResult commonResult2 = drServiceApi.selectDriverSettings(form2);
+        HashMap result2 =  (HashMap)commonResult2.get(CommonResult.RETURN_RESULT);
+
+        HashMap result = new HashMap<>();
+        result.put("business", result1);
+        result.put("settings", result2);
+
+        return result;
+    }
+
 }
