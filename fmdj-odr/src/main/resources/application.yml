@@ -19,14 +19,14 @@ spring:
       config:
         group: DEFAULT_GROUP
         file-extension: yaml
-        server-addr: 192.168.134.134:8848
+        server-addr: 192.168.58.134:8848
         prefix: ${spring.application.name}
         namespace: 0a79dc3a-6dec-428b-95f4-151b58831ecd
       discovery:
         namespace: 0a79dc3a-6dec-428b-95f4-151b58831ecd
         username: nacos
         password: nacos
-        server-addr: 192.168.134.134:8848
+        server-addr: 192.168.58.134:8848
         heart-beat-interval: 1000
         heart-beat-timeout: 1000
         group: DEFAULT_GROUP
@@ -34,7 +34,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://192.168.134.134:3307/fmdj?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
+      url: jdbc:mysql://192.168.58.134:3307/fmdj?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
       username: root
       password: 111222
       initial-size: 4
@@ -46,7 +46,7 @@ spring:
       test-on-return: false
   redis:
     database: 5
-    host: 192.168.134.134
+    host: 192.168.58.134
     port: 6379
     password: 111222
     jedis:

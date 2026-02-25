@@ -12,25 +12,21 @@ spring:
     #引用application-common.yml文件
     include: common
   application:
-    name: hxds-mis-api
+    name: fmdj-mis-api
   cloud:
-    inetutils:
-      #子系统注册到Nacos上的IP地址
-      preferred-networks: 127.0.0.1
     nacos:
-      #配置子系统在Web管理页面上的注册信息
+      #配置中心
       config:
         group: DEFAULT_GROUP
         file-extension: yaml
-        server-addr: 127.0.0.1:8848
+        server-addr: 192.168.58.134:8848
         prefix: ${spring.application.name}
-        namespace: hxds
-      #配置子系统在Nacos上的注册信息
+        namespace: 0a79dc3a-6dec-428b-95f4-151b58831ecd
       discovery:
-        namespace: hxds
+        namespace: 0a79dc3a-6dec-428b-95f4-151b58831ecd
         username: nacos
         password: nacos
-        server-addr: 127.0.0.1:8848
+        server-addr: 192.168.58.134:8848
         heart-beat-interval: 1000
         heart-beat-timeout: 1000
         group: DEFAULT_GROUP
@@ -38,9 +34,9 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3307/hxds?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
+      url: jdbc:mysql://192.168.58.134:3307/fmdj?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
       username: root
-      password: abc123456
+      password: 111222
       initial-size: 4
       max-active: 8
       min-idle: 8
@@ -50,25 +46,16 @@ spring:
       test-on-return: false
       validation-query: SELECT 1
   redis:
-    database: 8
-    host: localhost
+    database: 3
+    host: 192.168.58.134
     port: 6379
-    password: abc123456
+    password: 111222
     jedis:
       pool:
         max-active: 1000
         max-wait: -1ms
         max-idle: 16
         min-idle: 8
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
-      database: emos
-      authentication-database: admin
-      username: admin
-      password: abc123456
-
   quartz:
     job-store-type: memory
   servlet:
@@ -79,7 +66,7 @@ spring:
 
 mybatis:
   mapper-locations: classpath*:mapper/*.xml
-  type-aliases-package: com.example.hxds.mis.api.db.pojo
+  type-aliases-package: com.fmdj.mis.api.db.pojo
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
@@ -87,7 +74,7 @@ mybatis:
 logging:
   level:
     root: info
-    com.example.hxds.mis.api.db.dao: warn
+    com.fmdj.mis.api.db.dao: warn
   pattern:
     console: "%d{yyyy/MM/dd HH:mm:ss}  %-5level  %msg%n"
 
