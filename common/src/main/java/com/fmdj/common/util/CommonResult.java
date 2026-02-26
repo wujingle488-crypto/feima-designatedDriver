@@ -13,6 +13,10 @@ public class CommonResult extends HashMap<String, Object> {
 
     public static String RETURN_USER_ID = "userId";
 
+    public static String RETURN_PAGE = "page";
+
+    public static String RETURN_LIST = "list";
+
 
 
 

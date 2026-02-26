@@ -3,26 +3,26 @@ package com.fmdj.mis.api.db.dao;
 
 import com.fmdj.mis.api.db.pojo.DeptEntity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public interface DeptDao {
-    public ArrayList<HashMap> searchAllDept();
+    List<HashMap> selectDeptByPage(Map param);
 
-    public HashMap searchById(int id);
+    long selectDeptCount(Map param);
 
-    public ArrayList<HashMap> searchDeptByPage(Map param);
+    List<HashMap> selectAllDept();
 
-    public long searchDeptCount(Map param);
+    HashMap selectById(int id);
 
-    public boolean searchCanDelete(Integer[] ids);
+    int insert(DeptEntity entity);
 
-    public int insert(DeptEntity dept);
+    int update(DeptEntity entity);
 
-    public int update(DeptEntity dept);
+    boolean hasAssociatedUsers(Integer[] ids);
 
-    public int deleteDeptByIds(Integer[] ids);
+    int deleteDeptByIds(Integer[] ids);
 }
 
 
