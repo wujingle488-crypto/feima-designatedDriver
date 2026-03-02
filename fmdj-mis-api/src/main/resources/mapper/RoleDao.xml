@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fmdj.mis.api.db.dao.RoleDao">
+
+    <select id="selectRoleByPage" resultType="java.util.HashMap">
+        SELECT
+            r.systemic,
+            r.role_name AS roleName,
+            r.id,
+            r.`desc`,
+            COUNT(u.id) AS users,
+            JSON_LENGTH(r.permissions) AS permissions
+        FROM tb_role r
+        LEFT JOIN tb_user u ON JSON_CONTAINS(u.role,CONVERT(r.id,CHAR))
+        WHERE 1=1
+        <if test=" roleName!=null ">
+            AND r.role_name LIKE '%${roleName}%'
+        </if>
+        GROUP BY r.id
+        ORDER BY r.id
+        LIMIT #{start}, #{length}
+    </select>
+
+    <select id="selectRoleCount" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM ( SELECT r.id FROM tb_role r LEFT JOIN tb_user u ON JSON_CONTAINS ( u.role, CONVERT ( r.id, CHAR ) ) WHERE 1=1
+        <if test="roleName!=null"> AND r.role_name LIKE '%${roleName}%' </if>
+        GROUP BY r.id ) AS temp
+    </select>
+
+    <select id="selectAllRole" resultType="java.util.HashMap">
+        SELECT
+            id,
+            role_name AS roleName
+        FROM tb_role
+        GROUP BY id
+    </select>
+    <select id="selectById" resultType="java.util.HashMap" parameterType="int">
+        SELECT
+            id,
+            role_name AS roleName,
+            permissions,
+            `desc`,
+            default_permissions AS defaultPermissions
+        FROM tb_role
+        WHERE id = #{id}
+    </select>
+    <insert id="insert" parameterType="com.fmdj.mis.api.db.pojo.RoleEntity">
+        INSERT INTO tb_role
+        SET role_name = #{roleName},
+            permissions = #{permissions}
+        <if test="desc != null and desc != ''">
+            ,`desc` = #{desc}
+        </if>
+    </insert>
+
+    <select id="hasAssociatedUsers" resultType="boolean">
+        SELECT IF( SUM(temp.users)>0,true,false) AS result
+        FROM (SELECT COUNT(u.id) AS users
+                FROM tb_role r
+                JOIN tb_user u ON JSON_CONTAINS(u.role,CONVERT(r.id,CHAR))
+             WHERE r.id IN
+            <foreach collection="array" open="(" separator="," close=")" item="one">
+                #{one}
+            </foreach>
+            GROUP BY r.id
+             ) AS temp
+    </select>
+
+    <delete id="deleteRoleByIds">
+        DELETE FROM tb_role
+        WHERE id IN
+            <foreach collection="array" open="(" separator="," close=")" item="one">
+                #{one}
+            </foreach>
+    </delete>
+
+    <update id="update" parameterType="com.fmdj.mis.api.db.pojo.RoleEntity">
+        UPDATE tb_role
+        SET role_name=#{roleName},
+            `desc`=#{desc},
+            permissions=#{permissions}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectUserIdByRoleId" resultType="java.lang.Integer" parameterType="int">
+        SELECT u.id
+        FROM tb_user u
+        JOIN tb_role r ON JSON_CONTAINS(u.role,CONVERT(r.id,CHAR))
+        WHERE r.id = #{roleId}
+    </select>
+</mapper>

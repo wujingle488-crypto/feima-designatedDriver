@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,5 +24,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer login(Map param) {
         return userDao.login(param);
+    }
+
+    @Override
+    public HashMap loadUserInfo(int userId) {
+        return userDao.loadUserInfo(userId);
     }
 }

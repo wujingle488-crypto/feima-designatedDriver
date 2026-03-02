@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fmdj.mis.api.db.dao.PermissionDao">
+
+    <select id="searchAllPermission" resultType="java.util.HashMap">
+        SELECT m.module_name AS moduleName,
+            m.id,
+            a.action_name AS actionName
+        FROM tb_module m
+        JOIN tb_permission p ON m.id = p.module_id
+        JOIN tb_action a ON p.action_id = a.id
+    </select>
+</mapper>

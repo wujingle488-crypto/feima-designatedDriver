@@ -9,6 +9,8 @@ public interface UserDao {
     Set<String> searchUserPermissions(int userId);
 
     Integer login(Map param);
+
+    HashMap loadUserInfo(int userId);
 }
 
 

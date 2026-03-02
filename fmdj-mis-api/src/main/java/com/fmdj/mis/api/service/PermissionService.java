@@ -1,13 +1,8 @@
-package com.fmdj.mis.api.db.dao;
-
+package com.fmdj.mis.api.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public interface PermissionDao {
+public interface PermissionService {
     ArrayList<HashMap> searchAllPermission();
 }
-
-
-
-

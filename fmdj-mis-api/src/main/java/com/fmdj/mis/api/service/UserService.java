@@ -2,6 +2,7 @@ package com.fmdj.mis.api.service;
 
 import com.fmdj.common.util.PageUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -10,5 +11,5 @@ public interface UserService {
 
     Integer login(Map param);
 
-
+    HashMap loadUserInfo(int userId);
 }

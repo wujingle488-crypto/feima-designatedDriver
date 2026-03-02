@@ -7,23 +7,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface RoleDao {
-    public ArrayList<HashMap> searchAllRole();
 
-    public HashMap searchById(int id);
+    ArrayList<HashMap> selectRoleByPage(HashMap param);
 
-    public ArrayList<HashMap> searchRoleByPage(HashMap param);
+    Long selectRoleCount(HashMap param);
 
-    public long searchRoleCount(HashMap param);
+    ArrayList<HashMap> selectAllRole();
 
-    public int insert(RoleEntity role);
+    HashMap selectById(int id);
 
-    public ArrayList<Integer> searchUserIdByRoleId(int roleId);
+    int insert(RoleEntity entity);
 
-    public int update(RoleEntity role);
+    int update(RoleEntity entity);
 
-    public boolean searchCanDelete(Integer[] ids);
+    ArrayList<Integer> selectUserIdByRoleId(int roleId);
 
-    public int deleteRoleByIds(Integer[] ids);
+    boolean hasAssociatedUsers(Integer[] ids);
+
+    int deleteRoleByIds(Integer[] ids);
 }
 
 

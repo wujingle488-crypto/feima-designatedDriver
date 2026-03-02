@@ -1,5 +1,6 @@
 package com.fmdj.mis.api.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.annotation.SaMode;
 import cn.dev33.satoken.stp.StpUtil;
@@ -12,13 +13,11 @@ import com.fmdj.mis.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.checkerframework.checker.units.qual.C;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -43,5 +42,21 @@ public class UserController {
             commonResult.put(CommonResult.RETURN_TOKEN,token).put("permissions", permissions);
         }
         return commonResult;
+    }
+
+    @PostMapping("/logout")
+    @Operation(summary = "用户退出接口")
+    public CommonResult logout() {
+        StpUtil.logout();
+        return CommonResult.ok();
+    }
+
+    @GetMapping("/loadUserInfo")
+    @Operation(summary = "加载用户信息接口")
+    @SaCheckLogin
+    public CommonResult loadUserInfo(){
+        int userId = StpUtil.getLoginIdAsInt();
+        HashMap map = userService.loadUserInfo(userId);
+        return CommonResult.ok(map);
     }
 }
