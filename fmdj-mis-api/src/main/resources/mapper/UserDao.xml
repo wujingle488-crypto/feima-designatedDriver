@@ -22,11 +22,129 @@
     </select>
 
     <select id="loadUserInfo" resultType="java.util.HashMap" parameterType="int">
-        SELECT u.name
+        SELECT u.name,
             d.dept_name AS deptName
         FROM tb_user u
         JOIN tb_dept d ON u.dept_id = d.id
         WHERE u.id = #{userId}
         AND u.`status` = 1
     </select>
+
+    <select id="selectUserByPage" resultType="java.util.HashMap">
+        SELECT DISTINCT u.id,
+            u.sex,
+            u.root,
+            u.`name`,
+            u.tel,
+            d.dept_name AS dept,
+            u.email,
+            u.`status`,
+            ( SELECT GROUP_CONCAT( role_name SEPARATOR "，" ) FROM tb_role WHERE JSON_CONTAINS ( u.role, CONVERT ( r.id, CHAR ) ) ) AS roles
+        FROM
+            tb_user u
+                JOIN tb_dept d ON u.dept_id = d.id
+                JOIN tb_role r ON JSON_CONTAINS ( u.role, CONVERT ( r.id, CHAR ) )
+        WHERE 1=1
+        <if test="name!=null">
+            AND u.name LIKE CONCAT("%",#{name},"%")
+        </if>
+        <if test="sex!=null">
+            AND u.sex=#{sex}
+        </if>
+        <if test="role!=null">
+            AND r.role_name=#{role}
+        </if>
+        <if test="deptId!=null">
+            AND d.id=#{deptId}
+        </if>
+        <if test="status!=null">
+            AND u.status=#{status}
+        </if>
+        LIMIT #{start},#{length}
+    </select>
+
+    <select id="selectUserCount" resultType="long">
+        SELECT COUNT(*)
+        FROM tb_user u
+        JOIN tb_role r ON JSON_CONTAINS ( u.role, CONVERT ( r.id, CHAR ) )
+        WHERE 1=1
+        <if test="name!=null">
+            AND u.name LIKE "%${name}%"
+        </if>
+        <if test="sex!=null">
+            AND u.sex=#{sex}
+        </if>
+        <if test="role!=null">
+            AND r.role_name=#{role}
+        </if>
+        <if test="deptId!=null">
+            AND u.dept_id=#{deptId}
+        </if>
+        <if test="status!=null">
+            AND u.status=#{status}
+        </if>
+    </select>
+
+    <select id="selectAllUser" resultType="java.util.HashMap">
+        SELECT id, `name`
+        FROM tb_user
+        WHERE status = 1
+    </select>
+
+    <select id="selectById" resultType="java.util.HashMap" parameterType="int">
+        SELECT id,
+               username,
+               name,
+               sex,
+               tel,
+               email,
+               role,
+               dept_id AS deptId,
+               status
+        FROM tb_user
+        WHERE id = #{userId}
+    </select>
+
+    <insert id="insert" parameterType="com.fmdj.mis.api.db.pojo.UserEntity">
+        INSERT INTO tb_user SET username = #{username}, password = MD5(CONCAT(MD5(#{username}), #{password})), name = #{name}, sex = #{sex},
+        <if test="tel!=null"> tel = #{tel}, </if>
+        email=#{email}, role = #{role}, root = false, dept_id = #{deptId}, status = #{status}, create_time = #{createTime}
+    </insert>
+
+    <select id="selectNameAndDept" resultType="java.util.HashMap" parameterType="int">
+        SELECT u.name, d.dept_name AS dept
+        FROM tb_user u
+                 LEFT JOIN tb_dept d ON u.dept_id = d.id
+        WHERE u.id = #{userId}
+          AND u.status = 1
+    </select>
+
+    <update id="update" parameterType="com.fmdj.mis.api.db.pojo.UserEntity">
+        UPDATE tb_user
+        <set>
+            <if test="username != null">username = #{username},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="tel != null">tel = #{tel},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="role != null">role = #{role},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updatePassword">
+        UPDATE tb_user
+        SET password = MD5(CONCAT(MD5(username),#{newPassword}))
+        WHERE id = #{userId}
+        AND password = MD5(CONCAT(MD5(username),#{oldPassword}))
+    </update>
+
+    <delete id="delete">
+        DELETE FROM tb_user
+        WHERE id IN
+            <foreach item="one" collection="array" separator="," open="(" close=")">
+                #{one}
+            </foreach>
+    </delete>
 </mapper>

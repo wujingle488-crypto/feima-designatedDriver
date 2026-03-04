@@ -1,9 +1,9 @@
 package com.fmdj.mis.api.db.dao;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.fmdj.mis.api.controller.form.InsertUserForm;
+import com.fmdj.mis.api.db.pojo.UserEntity;
+
+import java.util.*;
 
 public interface UserDao {
     Set<String> searchUserPermissions(int userId);
@@ -11,6 +11,24 @@ public interface UserDao {
     Integer login(Map param);
 
     HashMap loadUserInfo(int userId);
+
+    List<HashMap> selectUserByPage(Map param);
+
+    long selectUserCount(Map param);
+
+    ArrayList<HashMap> selectAllUser();
+
+    HashMap selectById(int userId);
+
+    HashMap selectNameAndDept(int userId);
+
+    int insert(UserEntity userEntity);
+
+    int update(UserEntity userEntity);
+
+    int updatePassword(Map param);
+
+    int delete(Integer[] ids);
 }
 
 
