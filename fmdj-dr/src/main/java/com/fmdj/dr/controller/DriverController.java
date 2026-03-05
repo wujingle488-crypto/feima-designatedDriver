@@ -2,6 +2,7 @@ package com.fmdj.dr.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.fmdj.common.util.CommonResult;
+import com.fmdj.common.util.PageUtils;
 import com.fmdj.dr.controller.form.*;
 import com.fmdj.dr.service.DriverService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -60,5 +61,33 @@ public class DriverController {
         HashMap<String, Object> result = driverService.selectDriverInfoById(form.getDriverId());
         return CommonResult.ok().put(CommonResult.RETURN_RESULT, result);
     }
+
+    @PostMapping("/selectDriverByPage")
+    @Operation(summary = "根据司机个人信息分页")
+    public CommonResult selectDriverByPage(@RequestBody @Valid SelectDriverByPageForm form) {
+        Map<String, Object> param = BeanUtil.beanToMap(form);
+        int page = form.getPage();
+        int length = form.getLength();
+        int start = (page - 1) * length;
+        param.put("start", start);
+        PageUtils pageUtils = driverService.selectDriverByPage(param);
+        return CommonResult.ok().put(CommonResult.RETURN_RESULT, pageUtils);
+    }
+
+    @PostMapping("/selectDriverAuthInfo")
+    @Operation(summary = "根据司机认证信息")
+    public CommonResult selectDriverAuthInfo(@RequestBody @Valid SelectDriverAuthForm form) {
+        HashMap map = driverService.selectDriverAuthInfo(form.getDriverId());
+        return CommonResult.ok().put(CommonResult.RETURN_RESULT, map);
+    }
+
+    @PostMapping("/updateDriverRealAuth")
+    @Operation(summary = "更新司机认证信息")
+    public CommonResult updateDriverRealAuth(@RequestBody @Valid UpdateDriverRealAuthForm form) {
+        Map<String, Object> param = BeanUtil.beanToMap(form);
+        int rows = driverService.updateDriverRealAuth(param);
+        return CommonResult.ok().put(CommonResult.RETURN_ROW, rows);
+    }
+
 
 }

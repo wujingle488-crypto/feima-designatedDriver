@@ -17,6 +17,8 @@ public class CommonResult extends HashMap<String, Object> {
 
     public static String RETURN_LIST = "list";
 
+    public static String DRIVER_AUTH_INFO = "driverAuthInfo";
+
 
 
 

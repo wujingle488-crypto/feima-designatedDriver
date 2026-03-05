@@ -135,4 +135,31 @@ public class DriverServiceImpl implements DriverService {
         return driverDao.selectDriverInfoById(driverId);
     }
 
+    @Override
+    public PageUtils selectDriverByPage(Map param) {
+        ArrayList<HashMap<String, Object>> list;
+        Long count = driverDao.selectDriverByCount(param);
+
+        if (count == 0) {
+            list = new ArrayList<>();
+        } else {
+            list = driverDao.selectDriverByPage(param);
+        }
+
+        Integer page = MapUtil.getInt(param, "page");
+        Integer length = MapUtil.getInt(param, "length");
+        return new PageUtils(list, count, page, length);
+    }
+
+    @Override
+    public HashMap selectDriverAuthInfo(long driverId) {
+        return driverDao.selectDriverAuthInfo(driverId);
+    }
+
+    @Override
+    @Transactional
+    @LcnTransaction
+    public int updateDriverRealAuth(Map param) {
+        return driverDao.updateDriverRealAuth(param);
+    }
 }
