@@ -15,4 +15,16 @@ import javax.annotation.Resource;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
+    @Resource
+    private CstServiceApi cstServiceApi;
+
+    @Override
+    @Transactional
+    @LcnTransaction
+    public Long registerNewCustomer(RegisterNewCustomerForm form) {
+        CommonResult commonResult = cstServiceApi.registerNewCustomer(form);
+        String customerId = (String) commonResult.get(CommonResult.RETURN_USER_ID);
+        return Long.parseLong(customerId);
+    }
+
 }

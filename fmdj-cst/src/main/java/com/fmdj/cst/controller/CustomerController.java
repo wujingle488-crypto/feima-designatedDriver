@@ -20,5 +20,14 @@ import java.util.Map;
 @RequestMapping("/customer")
 @Tag(name = "CustomerController",description = "客户端web接口")
 public class CustomerController {
+    @Resource
+    private CustomerService customerService;
 
+    @PostMapping("/registerCustomer")
+    @Operation(summary = "乘客注册")
+    public CommonResult registerNewCustomer(@RequestBody @Valid RegisterNewCustomerForm form) {
+        Map<String, Object> param = BeanUtil.beanToMap(form);
+        String userId = customerService.registerNewCustomer(param);
+        return CommonResult.ok().put(CommonResult.RETURN_USER_ID, userId);
+    }
 }

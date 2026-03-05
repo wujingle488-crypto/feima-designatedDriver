@@ -28,23 +28,9 @@
         </if>
     </select>
 
-    <!--
-    根据customerID查询乘客信息
-    CAST：类型转换的参数
-      -->
     <select id="selectCustomerIdByOpenId" parameterType="String" resultType="String">
         SELECT CAST(id AS CHAR) AS id
         FROM tb_customer
         WHERE open_id = #{openId}
     </select>
-
-    <!--  乘客登录的方法，通过微信登录即可 -->
-    <select id="login" parameterType="String" resultType="String">
-        SELECT CAST(id AS CHAR) AS id
-        FROM tb_customer
-        WHERE `status` != 2 AND open_id = #{openId}
-    </select>
-
-
-
 </mapper>
