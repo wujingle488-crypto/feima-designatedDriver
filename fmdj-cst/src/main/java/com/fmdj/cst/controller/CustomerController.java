@@ -30,4 +30,11 @@ public class CustomerController {
         String userId = customerService.registerNewCustomer(param);
         return CommonResult.ok().put(CommonResult.RETURN_USER_ID, userId);
     }
+
+    @PostMapping("/login")
+    @Operation(summary = "乘客登录")
+    public CommonResult login(@RequestBody @Valid LoginForm form) {
+        String userId = customerService.login(form.getCode());
+        return CommonResult.ok().put(CommonResult.RETURN_USER_ID, userId);
+    }
 }

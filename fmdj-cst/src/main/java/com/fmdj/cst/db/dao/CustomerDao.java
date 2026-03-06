@@ -8,4 +8,6 @@ public interface CustomerDao {
     long hasCustomer(Map param);
 
     String selectCustomerIdByOpenId(String openId);
+
+    String login(String openId);
 }

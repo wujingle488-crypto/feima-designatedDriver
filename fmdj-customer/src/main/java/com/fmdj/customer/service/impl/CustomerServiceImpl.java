@@ -27,4 +27,16 @@ public class CustomerServiceImpl implements CustomerService {
         return Long.parseLong(customerId);
     }
 
+    @Override
+    public Long login(LoginForm form) {
+        CommonResult commonResult = cstServiceApi.login(form);
+        String userId = (String) commonResult.get(CommonResult.RETURN_USER_ID);
+
+        if (!StrUtil.isBlank(userId)) {
+            long customerId = Long.parseLong(userId);
+            return customerId;
+        }
+
+        return null;
+    }
 }

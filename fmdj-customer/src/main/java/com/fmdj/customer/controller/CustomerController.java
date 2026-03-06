@@ -30,4 +30,16 @@ public class CustomerController {
         return CommonResult.ok().put(CommonResult.RETURN_TOKEN, token);
     }
 
+    @PostMapping("/login")
+    @Operation(summary = "乘客登录")
+    public CommonResult login(@RequestBody @Valid LoginForm form) {
+        Long customerId = customerService.login(form);
+        if(customerId != null) {
+            StpUtil.login(customerId);
+            String token = StpUtil.getTokenInfo().getTokenValue();
+            return CommonResult.ok().put(CommonResult.RETURN_TOKEN, token);
+        }
+        return CommonResult.ok();
+    }
+
 }

@@ -13,4 +13,7 @@ import javax.validation.Valid;
 public interface CstServiceApi {
     @PostMapping("/customer/registerCustomer")
     CommonResult registerNewCustomer(RegisterNewCustomerForm form);
+
+    @PostMapping("/customer/login")
+    CommonResult login(LoginForm form);
 }

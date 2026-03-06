@@ -33,4 +33,10 @@
         FROM tb_customer
         WHERE open_id = #{openId}
     </select>
+
+    <select id="login" resultType="java.lang.String">
+        SELECT CAST(id AS CHAR) AS id
+        FROM tb_customer
+        WHERE open_id = #{openId} AND `status`!=2
+    </select>
 </mapper>

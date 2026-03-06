@@ -31,7 +31,7 @@ public class CustomerServiceImpl implements CustomerService {
         HashMap map = new HashMap<>(){{
             put("openId", openId);
         }};
-        if (customerDao.hasCustomer(param) != 0) {
+        if (customerDao.hasCustomer(map) != 0) {
             throw new GlobalException("该微信已经注册过");
         }
         param.put("openId", openId);
@@ -40,4 +40,9 @@ public class CustomerServiceImpl implements CustomerService {
         return customerDao.selectCustomerIdByOpenId(openId);
     }
 
+    @Override
+    public String login(String code) {
+        String openId = microAppUtil.getOpenId(code);
+        return customerDao.login(openId);
+    }
 }
