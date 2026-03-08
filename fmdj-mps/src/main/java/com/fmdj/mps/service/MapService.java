@@ -1,6 +1,7 @@
 package com.fmdj.mps.service;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public interface MapService {
     HashMap calculateTripDistanceAndDuration(String mode,
