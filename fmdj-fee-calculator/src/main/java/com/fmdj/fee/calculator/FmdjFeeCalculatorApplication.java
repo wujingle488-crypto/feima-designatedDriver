@@ -1,6 +1,4 @@
-package com.fmdj.customer;
-
-import com.codingapi.txlcn.tc.config.EnableDistributedTransaction;
+package com.fmdj.fee.calculator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
@@ -9,15 +7,13 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+@ServletComponentScan
 @EnableDiscoveryClient
 @EnableFeignClients
-@ServletComponentScan
 @ComponentScan("com.fmdj.*")
-@EnableDistributedTransaction
-public class FmdjCustomerApplication {
-
+public class FmdjFeeCalculatorApplication {
     public static void main(String[] args) {
-        SpringApplication.run(FmdjCustomerApplication.class, args);
+        SpringApplication.run(FmdjFeeCalculatorApplication.class, args);
     }
 
 }
