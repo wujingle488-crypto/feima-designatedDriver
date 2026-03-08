@@ -6,12 +6,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface CustomerCarDao {
-    public int insert(CustomerCarEntity entity);
+    int insert(CustomerCarEntity entity);
 
-    public ArrayList<HashMap> selectCustomerCarList(long customerId);
+    ArrayList<HashMap> selectCustomerCarList(long customerId);
 
-    public int deleteCustomerCarById(long id);
-
+    int deleteCustomerCarById(long id);
 }
 
 

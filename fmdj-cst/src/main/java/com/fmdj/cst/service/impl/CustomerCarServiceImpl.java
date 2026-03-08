@@ -11,4 +11,25 @@ import java.util.HashMap;
 
 @Service
 public class CustomerCarServiceImpl implements CustomerCarService {
+    @Resource
+    private CustomerCarDao customerCarDao;
+
+    @Override
+    @Transactional
+    @LcnTransaction
+    public void insertCustomerCar(CustomerCarEntity entity) {
+        customerCarDao.insert(entity);
+    }
+
+    @Override
+    public ArrayList<HashMap> selectCustomerCarList(long customerId) {
+        return customerCarDao.selectCustomerCarList(customerId);
+    }
+
+    @Override
+    @Transactional
+    @LcnTransaction
+    public int deleteCustomerCarById(long id) {
+        return customerCarDao.deleteCustomerCarById(id);
+    }
 }
