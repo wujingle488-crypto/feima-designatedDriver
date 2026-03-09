@@ -26,10 +26,11 @@ public class OrderController {
 
     @PostMapping("/createNewOrder")
     @Operation(summary = "创建新订单")
-    @SaCheckLogin
+    //@SaCheckLogin
     public CommonResult createNewOrder(@RequestBody @Valid CreateNewOrderForm form) {
-        long customerId = StpUtil.getLoginIdAsLong();
-        form.setCustomerId(customerId);
+        //long customerId = StpUtil.getLoginIdAsLong();
+        form.setCustomerId(1030860760882627552l);
+        //form.setCustomerId(form.getCustomerId());
         HashMap result = orderService.createOrder(form);
         return CommonResult.ok().put(CommonResult.RETURN_RESULT, result);
     }

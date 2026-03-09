@@ -5,10 +5,7 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.IdUtil;
 import com.codingapi.txlcn.tc.annotation.LcnTransaction;
 import com.fmdj.common.util.CommonResult;
-import com.fmdj.customer.controller.form.CalculateTripDistanceAndDurationForm;
-import com.fmdj.customer.controller.form.CreateNewOrderForm;
-import com.fmdj.customer.controller.form.InsertOrderForm;
-import com.fmdj.customer.controller.form.RideChargeCalculatorForm;
+import com.fmdj.customer.controller.form.*;
 import com.fmdj.customer.feign.FeeCalculatorServiceApi;
 import com.fmdj.customer.feign.MapServiceApi;
 import com.fmdj.customer.feign.OdrServiceApi;
@@ -17,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @Service
@@ -81,40 +79,56 @@ public class OrderServiceImpl implements OrderService {
         String exceedReturnPrice = MapUtil.getStr(map, "exceedReturnPrice");
 
         /*
-         * 生成订单记录
+         *  查找符合接单条件的司机：要计算附近几公里以内的有那些司机在线，我们就得用上Redis的GEO来计算坐标距离。
          * */
-        InsertOrderForm insertOrderForm = new InsertOrderForm();
-        insertOrderForm.setUuid(IdUtil.simpleUUID());
-        insertOrderForm.setCustomerId(customerId);
-        insertOrderForm.setStartPlace(startPlace);
-        insertOrderForm.setStartPlaceLatitude(startPlaceLatitude);
-        insertOrderForm.setStartPlaceLongitude(startPlaceLongitude);
-        insertOrderForm.setEndPlace(endPlace);
-        insertOrderForm.setEndPlaceLatitude(endPlaceLatitude);
-        insertOrderForm.setEndPlaceLongitude(endPlaceLongitude);
-        insertOrderForm.setExpectsMileage(mileage);
-        insertOrderForm.setExpectsFee(expectsFee);
-        insertOrderForm.setFavourFee(favourFee);
-        insertOrderForm.setDate(new DateTime().toDateStr());
-        insertOrderForm.setChargeRuleId(Long.parseLong(chargeRuleId));
-        insertOrderForm.setCarPlate(form.getCarPlate());
-        insertOrderForm.setCarType(form.getCarType());
-        insertOrderForm.setBaseMileage(baseMileage);
-        insertOrderForm.setBaseMileagePrice(baseMileagePrice);
-        insertOrderForm.setExceedMileagePrice(exceedMileagePrice);
-        insertOrderForm.setBaseMinute(baseMinute);
-        insertOrderForm.setExceedMinutePrice(exceedMinutePrice);
-        insertOrderForm.setBaseReturnMileage(baseReturnMileage);
-        insertOrderForm.setExceedReturnPrice(exceedReturnPrice);
-
-        /**
-         * 调用订单模块，插入订单
-         */
-        CommonResult commonResult3 = odrServiceApi.insertOrder(insertOrderForm);
-        String orderId = MapUtil.getStr(commonResult3, CommonResult.RETURN_ORDER_ID);
+        SearchBefittingDriverAboutOrderForm form3 = new SearchBefittingDriverAboutOrderForm();
+        form3.setStartPlaceLongitude(startPlaceLongitude);
+        form3.setStartPlaceLatitude(startPlaceLatitude);
+        form3.setEndPlaceLongitude(endPlaceLongitude);
+        form3.setEndPlaceLatitude(endPlaceLatitude);
+        form3.setMileage(mileage);
+        CommonResult commonResult3 = mapServiceApi.selectBefittingDriverAboutOrder(form3);
+        ArrayList<HashMap> list = (ArrayList<HashMap>) commonResult3.get(CommonResult.RETURN_LIST);
 
         HashMap result = new HashMap<>();
-        result.put("orderId", orderId);
+        //存在符合接单条件的司机就创建订单
+        if (list.size() > 0) {
+            /*
+             * 生成订单记录
+             * */
+            InsertOrderForm insertOrderForm = new InsertOrderForm();
+            insertOrderForm.setUuid(IdUtil.simpleUUID());
+            insertOrderForm.setCustomerId(customerId);
+            insertOrderForm.setStartPlace(startPlace);
+            insertOrderForm.setStartPlaceLatitude(startPlaceLatitude);
+            insertOrderForm.setStartPlaceLongitude(startPlaceLongitude);
+            insertOrderForm.setEndPlace(endPlace);
+            insertOrderForm.setEndPlaceLatitude(endPlaceLatitude);
+            insertOrderForm.setEndPlaceLongitude(endPlaceLongitude);
+            insertOrderForm.setExpectsMileage(mileage);
+            insertOrderForm.setExpectsFee(expectsFee);
+            insertOrderForm.setFavourFee(favourFee);
+            insertOrderForm.setDate(new DateTime().toDateStr());
+            insertOrderForm.setChargeRuleId(Long.parseLong(chargeRuleId));
+            insertOrderForm.setCarPlate(form.getCarPlate());
+            insertOrderForm.setCarType(form.getCarType());
+            insertOrderForm.setBaseMileage(baseMileage);
+            insertOrderForm.setBaseMileagePrice(baseMileagePrice);
+            insertOrderForm.setExceedMileagePrice(exceedMileagePrice);
+            insertOrderForm.setBaseMinute(baseMinute);
+            insertOrderForm.setExceedMinutePrice(exceedMinutePrice);
+            insertOrderForm.setBaseReturnMileage(baseReturnMileage);
+            insertOrderForm.setExceedReturnPrice(exceedReturnPrice);
+            /**
+             * 调用订单模块，插入订单
+             */
+            CommonResult commonResult4 = odrServiceApi.insertOrder(insertOrderForm);
+            String orderId = MapUtil.getStr(commonResult4, CommonResult.RETURN_ORDER_ID);
+
+            result.put("orderId", orderId);
+            result.put("count", list.size());
+        }
+
         return result;
     }
 }
