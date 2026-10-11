@@ -1,12 +1,28 @@
 # 飞马代驾
 
-面向乘客、司机和运营后台的代驾平台。乘客下单后，系统实时估算里程与费用，并用 Redis GEO 在附近在线司机中筛选可接单司机；司机端负责认证、位置上报和工作台，运营端负责组织、权限和司机审核。
+[![Java](https://img.shields.io/badge/Java-15-E76F00?logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.3.7-6DB33F?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-Hoxton-6DB33F)](https://spring.io/projects/spring-cloud)
+[![License](https://img.shields.io/badge/license-not%20specified-lightgrey)](#工程说明)
 
-技术栈：Java 15 · Spring Boot 2.3 · Spring Cloud Hoxton · Spring Cloud Alibaba · Nacos · Gateway · OpenFeign · Sentinel · Sa-Token · MyBatis · Redis · MySQL · MongoDB · RabbitMQ · Quartz · MinIO · 腾讯位置服务 · 微信支付
+> 一套覆盖乘客下单、实时估价、附近司机筛选、司机认证与运营管理的代驾微服务系统。
 
-## 适合网申的项目描述
+## 项目概述
 
-独立完成一套代驾业务的微服务拆分。乘客创建订单时，通过 OpenFeign 串联地图、计费和订单服务：腾讯地图计算预估里程和时长，计费服务按里程、时长和返程规则报价，Redis GEO 按距离召回在线司机，并用 WGS84 椭球距离做 3 公里可达性校验。订单写入使用本地事务和 TX-LCN 分布式事务注解。网关统一接入乘客端、司机端和运营端，Sentinel 做限流熔断，Sa-Token 结合 Redis 管理登录态。
+系统面向乘客、司机和运营后台三类角色。乘客提交起终点后，服务端通过 OpenFeign 编排地图、计费、司机位置和订单服务：腾讯地图计算预估里程与时长，计费服务按里程、时长和返程规则报价，Redis GEO 从在线司机中按距离召回候选人，再以 WGS84 椭球距离校验 3 公里可达性。存在可接单司机时才创建订单，并保存当次计费规则快照。
+
+司机端提供注册、实名认证、位置上报和工作台；运营端负责账号、部门、角色权限与司机审核。Spring Cloud Gateway 统一接入各端，Nacos 提供服务注册和配置管理，Sentinel 负责流量保护，Sa-Token 与 Redis 管理登录状态。
+
+**技术栈：** Java 15 · Spring Boot 2.3.7 · Spring Cloud Hoxton · Spring Cloud Alibaba · Nacos · Gateway · OpenFeign · Sentinel · Sa-Token · MyBatis · Redis · MySQL · MongoDB · RabbitMQ · Quartz · MinIO · 腾讯位置服务 · 微信支付
+
+## 快速导航
+
+- [核心亮点](#核心亮点)
+- [系统架构](#系统架构)
+- [创建订单](#创建订单)
+- [模块说明](#模块说明)
+- [主要能力](#主要能力)
+- [本地运行](#本地运行)
 
 ## 核心亮点
 
@@ -77,7 +93,7 @@ sequenceDiagram
   end
 ```
 
-## 模块
+## 模块说明
 
 | 模块 | 端口 | 职责 |
 | --- | --- | --- |
